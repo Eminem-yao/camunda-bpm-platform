@@ -30,6 +30,7 @@ public class CleanableHistoricDecisionInstanceReportImpl extends AbstractQuery<C
 
   protected String[] decisionDefinitionIdIn;
   protected String[] decisionDefinitionKeyIn;
+  protected String[] tenantIdIn;
 
   protected Date currentTimestamp;
 
@@ -48,6 +49,13 @@ public class CleanableHistoricDecisionInstanceReportImpl extends AbstractQuery<C
   public CleanableHistoricDecisionInstanceReport decisionDefinitionKeyIn(String... decisionDefinitionKeys) {
     ensureNotNull(NotValidException.class, "", "decisionDefinitionKeyIn", (Object[]) decisionDefinitionKeys);
     this.decisionDefinitionKeyIn = decisionDefinitionKeys;
+    return this;
+  }
+
+  @Override
+  public CleanableHistoricDecisionInstanceReport tenantIdIn(String... tenantIds) {
+    ensureNotNull(NotValidException.class, "", "tenantIdIn", (Object[]) tenantIds);
+    this.tenantIdIn = tenantIds;
     return this;
   }
 

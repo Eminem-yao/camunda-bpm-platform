@@ -176,9 +176,13 @@ public class CleanableHistoricProcessInstanceReportServiceTest extends AbstractR
     String aProcDefKey = "anProcDefKey";
     String anotherProcDefKey = "anotherProcDefKey";
 
+    String aTenantId = "anTenantId";
+    String anotherTenantId = "anotherTenantId";
+
     given()
       .queryParam("processDefinitionIdIn", aProcDefId + "," + anotherProcDefId)
       .queryParam("processDefinitionKeyIn", aProcDefKey + "," + anotherProcDefKey)
+      .queryParam("tenantIdIn", aTenantId + "," + anotherTenantId)
     .then()
       .expect()
         .statusCode(Status.OK.getStatusCode())
@@ -188,6 +192,7 @@ public class CleanableHistoricProcessInstanceReportServiceTest extends AbstractR
 
     verify(historicProcessInstanceReport).processDefinitionIdIn(aProcDefId, anotherProcDefId);
     verify(historicProcessInstanceReport).processDefinitionKeyIn(aProcDefKey, anotherProcDefKey);
+    verify(historicProcessInstanceReport).tenantIdIn(aTenantId, anotherTenantId);
     verify(historicProcessInstanceReport).list();
   }
 

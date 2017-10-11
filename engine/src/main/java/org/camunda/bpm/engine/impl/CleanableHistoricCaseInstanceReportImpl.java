@@ -30,6 +30,7 @@ public class CleanableHistoricCaseInstanceReportImpl extends AbstractQuery<Clean
 
   protected String[] caseDefinitionIdIn;
   protected String[] caseDefinitionKeyIn;
+  protected String[] tenantIdIn;
 
   protected Date currentTimestamp;
 
@@ -48,6 +49,13 @@ public class CleanableHistoricCaseInstanceReportImpl extends AbstractQuery<Clean
   public CleanableHistoricCaseInstanceReport caseDefinitionKeyIn(String... caseDefinitionKeys) {
     ensureNotNull(NotValidException.class, "", "caseDefinitionKeyIn", (Object[]) caseDefinitionKeys);
     this.caseDefinitionKeyIn = caseDefinitionKeys;
+    return this;
+  }
+
+  @Override
+  public CleanableHistoricCaseInstanceReport tenantIdIn(String... tenantIds) {
+    ensureNotNull(NotValidException.class, "", "tenantIdIn", (Object[]) tenantIds);
+    this.tenantIdIn = tenantIds;
     return this;
   }
 

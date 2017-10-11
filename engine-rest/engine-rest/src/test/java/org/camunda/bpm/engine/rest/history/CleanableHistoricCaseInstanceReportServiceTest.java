@@ -178,9 +178,13 @@ public class CleanableHistoricCaseInstanceReportServiceTest extends AbstractRest
     String aCaseDefKey = "anCaseDefKey";
     String anotherCaseDefKey = "anotherCaseDefKey";
 
+    String aTenantId = "anTenantId";
+    String anotherTenantId = "anotherTenantId";
+
     given()
       .queryParam("caseDefinitionIdIn", aCaseDefId + "," + anotherCaseDefId)
       .queryParam("caseDefinitionKeyIn", aCaseDefKey + "," + anotherCaseDefKey)
+      .queryParam("tenantIdIn", aTenantId + "," + anotherTenantId)
     .then()
       .expect()
         .statusCode(Status.OK.getStatusCode())

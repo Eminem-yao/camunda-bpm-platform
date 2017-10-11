@@ -177,9 +177,13 @@ public class CleanableHistoricDecisionInstanceReportServiceTest extends Abstract
     String aDecDefKey = "anDecDefKey";
     String anotherDecDefKey = "anotherDecDefKey";
 
+    String aTenantId = "anTenantId";
+    String anotherTenantId = "anotherTenantId";
+
    given()
      .queryParam("decisionDefinitionIdIn", aDecDefId + "," + anotherDecDefId)
      .queryParam("decisionDefinitionKeyIn", aDecDefKey + "," + anotherDecDefKey)
+     .queryParam("tenantIdIn", aTenantId + "," + anotherTenantId)
    .then().expect()
      .statusCode(Status.OK.getStatusCode())
      .contentType(ContentType.JSON)

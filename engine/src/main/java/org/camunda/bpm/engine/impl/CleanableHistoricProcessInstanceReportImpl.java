@@ -30,6 +30,7 @@ public class CleanableHistoricProcessInstanceReportImpl extends AbstractQuery<Cl
 
   protected String[] processDefinitionIdIn;
   protected String[] processDefinitionKeyIn;
+  protected String[] tenantIdIn;
 
   protected Date currentTimestamp;
 
@@ -46,6 +47,13 @@ public class CleanableHistoricProcessInstanceReportImpl extends AbstractQuery<Cl
   public CleanableHistoricProcessInstanceReport processDefinitionKeyIn(String... processDefinitionKeys) {
     ensureNotNull(NotValidException.class, "", "processDefinitionKeyIn", (Object[]) processDefinitionKeys);
     this.processDefinitionKeyIn = processDefinitionKeys;
+    return this;
+  }
+
+  @Override
+  public CleanableHistoricProcessInstanceReport tenantIdIn(String... tenantIds) {
+    ensureNotNull(NotValidException.class, "", "tenantIdIn", (Object[]) tenantIds);
+    this.tenantIdIn = tenantIds;
     return this;
   }
 

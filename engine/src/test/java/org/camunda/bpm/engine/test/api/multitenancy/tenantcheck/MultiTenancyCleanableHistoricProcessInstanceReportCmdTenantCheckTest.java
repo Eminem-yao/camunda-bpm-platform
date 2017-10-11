@@ -134,6 +134,70 @@ public class MultiTenancyCleanableHistoricProcessInstanceReportCmdTenantCheckTes
     assertEquals(TENANT_TWO, reportResults.get(1).getTenantId());
   }
 
+  @Test
+  public void testReportTenantIdInNoAuthenticatedTenants() {
+    // given
+    testRule.deployForTenant(TENANT_ONE, BPMN_PROCESS);
+    testRule.deployForTenant(TENANT_TWO, BPMN_PROCESS);
+
+    prepareProcessInstances(PROCESS_DEFINITION_KEY, -6, 5, 10, TENANT_ONE);
+    prepareProcessInstances(PROCESS_DEFINITION_KEY, -6, 5, 10, TENANT_TWO);
+
+    identityService.setAuthentication("user", null, null);
+
+    // when
+    List<CleanableHistoricProcessInstanceReportResult> reportResultsOne = historyService.createCleanableHistoricProcessInstanceReport().tenantIdIn(TENANT_ONE).list();
+    List<CleanableHistoricProcessInstanceReportResult> reportResultsTwo = historyService.createCleanableHistoricProcessInstanceReport().tenantIdIn(TENANT_TWO).list();
+
+    // then
+    assertEquals(0, reportResultsOne.size());
+    assertEquals(0, reportResultsTwo.size());
+  }
+
+  @Test
+  public void testReportTenantIdInWithAuthenticatedTenants() {
+    // given
+    testRule.deployForTenant(TENANT_ONE, BPMN_PROCESS);
+    testRule.deployForTenant(TENANT_TWO, BPMN_PROCESS);
+
+    prepareProcessInstances(PROCESS_DEFINITION_KEY, -6, 5, 10, TENANT_ONE);
+    prepareProcessInstances(PROCESS_DEFINITION_KEY, -6, 5, 10, TENANT_TWO);
+
+    identityService.setAuthentication("user", null, Arrays.asList(TENANT_ONE));
+
+    // when
+    List<CleanableHistoricProcessInstanceReportResult> reportResultsOne = historyService.createCleanableHistoricProcessInstanceReport().tenantIdIn(TENANT_ONE).list();
+    List<CleanableHistoricProcessInstanceReportResult> reportResultsTwo = historyService.createCleanableHistoricProcessInstanceReport().tenantIdIn(TENANT_TWO).list();
+
+    // then
+    assertEquals(1, reportResultsOne.size());
+    assertEquals(TENANT_ONE, reportResultsOne.get(0).getTenantId());
+    assertEquals(0, reportResultsTwo.size());
+  }
+
+  @Test
+  public void testReportTenantIdInDisabledTenantCheck() {
+    // given
+    testRule.deployForTenant(TENANT_ONE, BPMN_PROCESS);
+    testRule.deployForTenant(TENANT_TWO, BPMN_PROCESS);
+
+    prepareProcessInstances(PROCESS_DEFINITION_KEY, -6, 5, 10, TENANT_ONE);
+    prepareProcessInstances(PROCESS_DEFINITION_KEY, -6, 5, 10, TENANT_TWO);
+
+    identityService.setAuthentication("user", null, null);
+    processEngineConfiguration.setTenantCheckEnabled(false);
+
+    // when
+    List<CleanableHistoricProcessInstanceReportResult> reportResultsOne = historyService.createCleanableHistoricProcessInstanceReport().tenantIdIn(TENANT_ONE).list();
+    List<CleanableHistoricProcessInstanceReportResult> reportResultsTwo = historyService.createCleanableHistoricProcessInstanceReport().tenantIdIn(TENANT_TWO).list();
+
+    // then
+    assertEquals(1, reportResultsOne.size());
+    assertEquals(TENANT_ONE, reportResultsOne.get(0).getTenantId());
+    assertEquals(1, reportResultsTwo.size());
+    assertEquals(TENANT_TWO, reportResultsTwo.get(0).getTenantId());
+  }
+
   protected void prepareProcessInstances(String key, int daysInThePast, Integer historyTimeToLive, int instanceCount, String tenantId) {
     List<ProcessDefinition> processDefinitions = null;
     if (tenantId == null) {

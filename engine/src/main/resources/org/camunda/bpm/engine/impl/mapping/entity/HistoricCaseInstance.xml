@@ -373,6 +373,13 @@
           </foreach>
         </if>
 
+        <if test="tenantIdIn != null &amp;&amp; tenantIdIn.length > 0">
+          and RES.TENANT_ID_ IN
+          <foreach item="tenantId" index="index" collection="tenantIdIn" open="(" separator="," close=")">
+              #{tenantId}
+          </foreach>
+        </if>
+
         <include refid="org.camunda.bpm.engine.impl.persistence.entity.TenantEntity.queryTenantCheck" />
 
       </where>

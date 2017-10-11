@@ -27,8 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CleanableHistoricDecisionInstanceReportDto extends AbstractQueryDto<CleanableHistoricDecisionInstanceReport>{
 
-  private String[] decisionDefinitionIdIn;
-  private String[] decisionDefinitionKeyIn;
+  protected String[] decisionDefinitionIdIn;
+  protected String[] decisionDefinitionKeyIn;
+  protected String[] tenantIdIn;
 
   public CleanableHistoricDecisionInstanceReportDto() {
   }
@@ -45,6 +46,11 @@ public class CleanableHistoricDecisionInstanceReportDto extends AbstractQueryDto
   @CamundaQueryParam(value = "decisionDefinitionKeyIn", converter = StringArrayConverter.class)
   public void setDecisionDefinitionKeyIn(String[] decisionDefinitionKeyIn) {
     this.decisionDefinitionKeyIn = decisionDefinitionKeyIn;
+  }
+
+  @CamundaQueryParam(value = "tenantIdIn", converter = StringArrayConverter.class)
+  public void setTenantIdIn(String[] tenantIdIn) {
+    this.tenantIdIn = tenantIdIn;
   }
 
   @Override
@@ -65,7 +71,9 @@ public class CleanableHistoricDecisionInstanceReportDto extends AbstractQueryDto
     if (decisionDefinitionKeyIn != null && decisionDefinitionKeyIn.length > 0) {
       query.decisionDefinitionKeyIn(decisionDefinitionKeyIn);
     }
-
+    if (tenantIdIn != null && tenantIdIn.length > 0) {
+      query.tenantIdIn(tenantIdIn);
+    }
   }
 
   @Override

@@ -27,8 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CleanableHistoricProcessInstanceReportDto extends AbstractQueryDto<CleanableHistoricProcessInstanceReport> {
 
-  private String[] processDefinitionIdIn;
-  private String[] processDefinitionKeyIn;
+  protected String[] processDefinitionIdIn;
+  protected String[] processDefinitionKeyIn;
+  protected String[] tenantIdIn;
 
   public CleanableHistoricProcessInstanceReportDto() {
   }
@@ -45,6 +46,11 @@ public class CleanableHistoricProcessInstanceReportDto extends AbstractQueryDto<
   @CamundaQueryParam(value = "processDefinitionKeyIn", converter = StringArrayConverter.class)
   public void setProcessDefinitionKeyIn(String[] processDefinitionKeyIn) {
     this.processDefinitionKeyIn = processDefinitionKeyIn;
+  }
+
+  @CamundaQueryParam(value = "tenantIdIn", converter = StringArrayConverter.class)
+  public void setTenantIdIn(String[] tenantIdIn) {
+    this.tenantIdIn = tenantIdIn;
   }
 
   @Override
@@ -64,6 +70,9 @@ public class CleanableHistoricProcessInstanceReportDto extends AbstractQueryDto<
     }
     if (processDefinitionKeyIn != null && processDefinitionKeyIn.length > 0) {
       query.processDefinitionKeyIn(processDefinitionKeyIn);
+    }
+    if (tenantIdIn != null && tenantIdIn.length > 0) {
+      query.tenantIdIn(tenantIdIn);
     }
 
   }

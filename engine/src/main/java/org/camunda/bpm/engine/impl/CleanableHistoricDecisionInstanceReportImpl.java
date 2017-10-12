@@ -31,6 +31,7 @@ public class CleanableHistoricDecisionInstanceReportImpl extends AbstractQuery<C
   protected String[] decisionDefinitionIdIn;
   protected String[] decisionDefinitionKeyIn;
   protected String[] tenantIdIn;
+  protected boolean isTenantIdSet = false;
 
   protected Date currentTimestamp;
 
@@ -56,6 +57,14 @@ public class CleanableHistoricDecisionInstanceReportImpl extends AbstractQuery<C
   public CleanableHistoricDecisionInstanceReport tenantIdIn(String... tenantIds) {
     ensureNotNull(NotValidException.class, "", "tenantIdIn", (Object[]) tenantIds);
     this.tenantIdIn = tenantIds;
+    isTenantIdSet = true;
+    return this;
+  }
+
+  @Override
+  public CleanableHistoricDecisionInstanceReport withoutTenantId() {
+    this.tenantIdIn = null;
+    isTenantIdSet = true;
     return this;
   }
 
@@ -99,4 +108,15 @@ public class CleanableHistoricDecisionInstanceReportImpl extends AbstractQuery<C
     this.currentTimestamp = currentTimestamp;
   }
 
+  public String[] getTenantIdIn() {
+    return tenantIdIn;
+  }
+
+  public void setTenantIdIn(String[] tenantIdIn) {
+    this.tenantIdIn = tenantIdIn;
+  }
+
+  public boolean isTenantIdSet() {
+    return isTenantIdSet;
+  }
 }

@@ -43,4 +43,10 @@ public interface CleanableHistoricDecisionInstanceReport extends Query<Cleanable
    * @throws NotValidException if one of the given ids is null
    */
   CleanableHistoricDecisionInstanceReport tenantIdIn(String... tenantIds);
+
+  /**
+   * Only selects historic decision instances which have no tenant id.
+   */
+  CleanableHistoricDecisionInstanceReport withoutTenantId();
+
 }

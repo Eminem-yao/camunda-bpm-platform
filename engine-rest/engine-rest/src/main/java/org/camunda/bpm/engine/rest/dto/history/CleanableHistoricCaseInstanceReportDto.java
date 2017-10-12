@@ -21,6 +21,7 @@ import org.camunda.bpm.engine.ProcessEngine;
 import org.camunda.bpm.engine.history.CleanableHistoricCaseInstanceReport;
 import org.camunda.bpm.engine.rest.dto.AbstractQueryDto;
 import org.camunda.bpm.engine.rest.dto.CamundaQueryParam;
+import org.camunda.bpm.engine.rest.dto.converter.BooleanConverter;
 import org.camunda.bpm.engine.rest.dto.converter.StringArrayConverter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +31,7 @@ public class CleanableHistoricCaseInstanceReportDto extends AbstractQueryDto<Cle
   protected String[] caseDefinitionIdIn;
   protected String[] caseDefinitionKeyIn;
   protected String[] tenantIdIn;
+  protected Boolean withoutTenantId;
 
   public CleanableHistoricCaseInstanceReportDto() {
   }
@@ -53,6 +55,11 @@ public class CleanableHistoricCaseInstanceReportDto extends AbstractQueryDto<Cle
     this.tenantIdIn = tenantIdIn;
   }
 
+  @CamundaQueryParam(value = "withoutTenantId", converter = BooleanConverter.class)
+  public void setWithoutTenantId(Boolean withoutTenantId) {
+    this.withoutTenantId = withoutTenantId;
+  }
+
   @Override
   protected boolean isValidSortByValue(String value) {
     return false;
@@ -70,6 +77,9 @@ public class CleanableHistoricCaseInstanceReportDto extends AbstractQueryDto<Cle
     }
     if (caseDefinitionKeyIn != null && caseDefinitionKeyIn.length > 0) {
       query.caseDefinitionKeyIn(caseDefinitionKeyIn);
+    }
+    if (Boolean.TRUE.equals(withoutTenantId)) {
+      query.withoutTenantId();
     }
     if (tenantIdIn != null && tenantIdIn.length > 0) {
       query.tenantIdIn(tenantIdIn);
